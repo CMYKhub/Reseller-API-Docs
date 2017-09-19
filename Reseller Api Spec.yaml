@@ -1,0 +1,410 @@
+swagger: '2.0'
+info:
+  title: CMYKhub Reseller API
+  version: '1.0'
+  contact:
+    name: Michael Denholm
+    email: michael.denholm@cmykhub.com
+    url: http://www.cmykhub.com
+  description: Quoting and Ordering interface for Resellers
+schemes:
+  - https
+consumes:
+  - application/json
+  - application/octet-stream
+  - application/json-patch+json
+produces:
+  - application/json
+  - application/octet-stream
+security:
+  - API Key: []
+paths:
+  /:
+    get:
+      operationId: getDiscovery
+      summary: Returns a discovery resource
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Discovery Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+  /products:
+    get:
+      operationId: getProducts
+      summary: Returns all products
+      description: Returns all products
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Filters products by name
+      responses:
+        200:
+          description: Products Resource
+          schema:
+            type: object
+        401:
+          $ref: "#/responses/Unauthorized"
+  /paper:
+    get:
+      operationId: getPapers
+      summary: Returns papers optionally filtered by name
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Filters papers by name
+      responses:
+        200:
+          description: Papers Resource
+          schema:
+            type: object
+        401:
+          $ref: "#/responses/Unauthorized"
+  /finishing:
+    get:
+      operationId: getFinishings
+      summary: Returns finishings optionally filtered by name
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Filters finishings by name
+      responses:
+        200:
+          description: Finishings Resource
+          schema:
+            type: object
+        401:
+          $ref: "#/responses/Unauthorized"
+  /finishing/available:
+    get:
+      operationId: getFinishingAvailable
+      summary: Returns finishings available for a given specification
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: width
+          in: query
+          required: true
+          type: number
+          allowEmptyValue: false
+          description: The width of the trimmed product in millimetres
+        - name: height
+          in: query
+          required: true
+          type: number
+          allowEmptyValue: false
+          description: The height of the trimmed product in millimetres
+        - name: paperWeight
+          in: query
+          required: true
+          type: number
+          allowEmptyValue: false
+          description: The weight of the paper in gsm
+        - name: printType
+          in: query
+          required: false
+          type: integer
+          description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
+        - name: book.pp
+          in: query
+          required: false
+          type: integer
+          description: The number of printed pages in the book. NB if any book parameters are specified then all book parameters must be specified
+        - name: book.orientation
+          in: query
+          required: false
+          type: integer
+          description: The orientation of the book(0=Portrait, 1=Landscape). NB if any book parameters are specified then all book parameters must be specified
+      responses:
+        200:
+          description: Available Finishings Resource
+          schema:
+            type: object
+        400:
+          description: Bad request
+        401:
+          $ref: "#/responses/Unauthorized"
+  /pricing/standard:
+    post:
+      operationId: getProductPrice
+      summary: Creates a price for a standard product
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: wizard
+          in: body
+          required: true
+          description: The details of the product to price
+          schema:
+            type: object
+            required:
+              - productId
+              - quantity
+              - kinds
+            properties:
+              productId:
+                type: string
+                description: The id of the product to price
+              finishedSize:
+                $ref: "#/definitions/Size"
+              quantity:
+                type: integer
+                description: The number of finished items of each kind
+              kinds:
+                type: integer
+                description: The number of different kinds
+              deliveryType:
+                type: integer
+                description: The type of delivery (0=To Reseller, 1=Pickup, 2=To Customer)
+              printType:
+                type: integer
+                description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
+              finishing:
+                type: array
+                description: Finishing to apply to this product
+                items:
+                  type: object
+                  properties:
+                    finishingId:
+                      type: string
+                      description: The id of the finishing
+                    noItems:
+                      type: integer
+                      description: The number of finished items to apply this finishing to
+      responses:
+        200:
+          description: Product Price Resource
+        400:
+          description: Bad request, invalid product wizard
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /orders:
+    get:
+      operationId: getOrders
+      summary: Returns orders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Orders Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+    post:
+      operationId: postOrder
+      summary: Creates an order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: order
+          in: body
+          required: true
+          description: Order details
+          schema:
+            type: object
+            required:
+              - reference
+            properties:
+              reference:
+                type: string
+                description: The resellers reference to this order
+              productId:
+                type: string
+                description: The id of the product to order (quoteId must not be specified)
+              quoteId:
+                type: string
+                description: The id of the quote to order (productId must not be specified)
+      responses:
+        200:
+          description: Order Resource
+        400:
+          description: Bad request
+        401:
+          $ref: "#/responses/Unauthorized"
+        409:
+          description: When the quote has already been ordered
+  /orders/{id}:
+    get:
+      operationId: getOrderById
+      summary: Returns orders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Order Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /orders/{id}/artwork:
+    get:
+      operationId: getOrderArtworkById
+      summary: Returns artwork info for an order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the order
+          type: string
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Order Artwork Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+    patch:
+      operationId: patch artwork file
+      summary: Patch properties of the artwork file
+      consumes:
+        - application/json-patch+json
+      responses:
+        200:
+          description: Patched Order Artwork Resource
+    post:
+      operationId: postOrderArtwork
+      summary: Upload artwork
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: artwork
+          in: body
+          required: true
+          description: Order details
+          schema:
+            type: object
+            required:
+              - filename
+            properties:
+              filename:
+                type: string
+                description: The name of the file to be uploaded
+              md5:
+                type: string
+                description: The MD5 checksum for the file contents (This will be used by the server to validate the received contents)
+      responses:
+        200:
+          description: Artwork Resource
+        400:
+          description: Bad request
+        401:
+          $ref: "#/responses/Unauthorized"
+        409:
+          description: When a file attached to this order already exists with the same name
+  /artwork/{id}/content:
+    get:
+      operationId: getArtworkContentById
+      summary: Returns content for an artwork file
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the order
+          type: string
+      produces:
+        - application/octet-stream
+      responses:
+        200:
+          description: Order Artwork Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+    post:
+      operationId: postArtworkContent
+      summary: Upload artwork content stream
+      description: Chunking headers supported
+      consumes:
+        - application/octet-stream
+      responses:
+        200:
+          description: Commit Resource
+        400:
+          description: Bad request
+        401:
+          $ref: "#/responses/Unauthorized"
+        409:
+          description: When a chunking headers specify overlap of bytes
+host: api.cmykhub.com
+securityDefinitions:
+  API Key:
+    type: apiKey
+    name: api_key
+    in: header
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: "#/definitions/Error"
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: "#/definitions/Error"
+definitions:
+  # Schema for error response body
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+  Size:
+    type: object
+    properties: 
+      width:
+        type: number
+        description: The width in millimetres
+      height:
+        type: number
+        description: The height in millimetres
