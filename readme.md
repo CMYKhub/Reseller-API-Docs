@@ -23,6 +23,7 @@ to all other resources in the API.
 ## SDK's
 * [Dotnet Api Client](https://github.com/CMYKhub/Reseller-NET-SDK)
 * [REST API Reference](Api%20Reference.md)
+* [Open API (Swagger) Spec](Reseller%20Api%20Spec.yaml)
 
 ## Contact
 
