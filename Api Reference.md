@@ -5,3 +5,4 @@
 * [Orders](Orders.md)
 * [Papers](Papers.md)
 * [Finishing's](Finishings.md)
+* [Pricing](Pricing.md)
