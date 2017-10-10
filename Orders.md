@@ -63,3 +63,212 @@ Response
     ]
 }
 ```
+
+
+
+
+
+<span style="color: blue">**POST**</span> /man/orders
+
+Creates an order for print.
+
+## Existing Quote
+Orders can be placed with reference to an existing quote.
+
+Eg
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/orders",
+      dataType: "json",
+      type : "POST",
+      data: {
+          quoteId: "98765"
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "OrderId": "139424",
+    "ResellerId": 9999,
+    "Links": [
+        {
+            "Uri": "https://hublink.api.cmykhub.com/man/orders/139424",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/accounts/payments?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/orders/relations/payment",
+            "MediaType": "text/html"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/pp/orders?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/prepress/relations/orders/artwork",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```
+
+## Previous Product Price
+Orders can be placed with reference to a price generated previously.
+
+Eg
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/orders",
+      dataType: "json",
+      type : "POST",
+      data: {
+          token: "56dfs6789df6789gdf8769",
+          reference: "MYREF: 653",
+          notes: "Logo Colour A26"
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "OrderId": "139424",
+    "ResellerId": 9999,
+    "Links": [
+        {
+            "Uri": "https://hublink.api.cmykhub.com/man/orders/139424",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/accounts/payments?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/orders/relations/payment",
+            "MediaType": "text/html"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/pp/orders?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/prepress/relations/orders/artwork",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```
+
+## From Product Specification
+Orders can be placed with product specification.
+
+Eg
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/orders",
+      dataType: "json",
+      type : "POST",
+      data: {
+          product: {
+              quantity: 1000,
+              orientation: 0,
+              finishedSize: { width: 205, height: 280 },
+              bindingId: "1",
+              printType: 2,
+              body:{
+              	paperId: "215",
+              	pp: 32
+              }
+          },
+          reference: "MYREF: 653",
+          notes: "Logo Colour A26"
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "OrderId": "139424",
+    "ResellerId": 9999,
+    "Links": [
+        {
+            "Uri": "https://hublink.api.cmykhub.com/man/orders/139424",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/accounts/payments?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/orders/relations/payment",
+            "MediaType": "text/html"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/pp/orders?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/prepress/relations/orders/artwork",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```
+
+## From Booklet Specification
+Orders can be placed with booklet specification. Any booklet specification is valid, see [Pricing](Pricing.md) for more details on booklet specifications.
+
+Eg
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/orders",
+      dataType: "json",
+      type : "POST",
+      data: {
+          booklet: {
+              quantity: 1000,
+              orientation: 0,
+              finishedSize: { width: 205, height: 280 },
+              bindingId: "1",
+              printType: 2,
+              body:{
+              	paperId: "215",
+              	pp: 32
+              },
+              cover:{
+              	productId: "1400"
+              }
+          },
+          reference: "MYREF: 653",
+          notes: "Logo Colour A26"
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "OrderId": "139424",
+    "ResellerId": 9999,
+    "Links": [
+        {
+            "Uri": "https://hublink.api.cmykhub.com/man/orders/139424",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/accounts/payments?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/orders/relations/payment",
+            "MediaType": "text/html"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/pp/orders?orderId=139424",
+            "Relation": "http://schemas.cmykhub.com/api/prepress/relations/orders/artwork",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```
