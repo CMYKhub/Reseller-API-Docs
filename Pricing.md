@@ -252,3 +252,109 @@ Response
     "Token": "eyIkdHlwZSI....IXBAfqyMkvrqPe9g"
 }
 ```
+
+
+## Wide Format products
+
+<span style="color: blue">**GET**</span> /man/pricing/wideFormat
+
+Creates a price for the given wide format product details.
+
+***Product ID*** is required. This specifies the ID of the product to be priced. See [Products](Products.md) for information on how to query the products.
+
+***Quantity*** is required. This is the number of finished items of one kind required.
+
+***Kinds**** is required. This specifies the number of unique items of artwork to be printed.
+EG, for two different images on a poster this value would be 2.
+
+***Finished size*** is optional depending on the product. If the product has a fixed size then this must not be specified.
+ If the product has a variable size this must be specified
+Units are millimetres.
+
+***Finishing*** is optional depending on the product. This must be specified for finishing that is
+part of the product and required configuration. EG for a product with eyelets, this must be specified. 
+Config is used to configure the values for the fields
+
+
+Eg
+Javascript ajax request (product with no finishing config required)
+```javascript
+    $.ajax({
+      url: "/man/pricing/wideFormat",
+      dataType: "json",
+      type : "POST",
+      data: {
+          productId: "12345",
+          quantity: 3,
+          kinds: 2,
+          finishedSize: { width: 950, height: 1200 }
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "Expires": "2018-08-27T00:00:00+08:00",
+    "Price": {
+        "ExTax": 105.61,
+        "Tax": 10.56,
+        "IncTax": 116.17,
+        "Currency": {
+            "Code": "AUD",
+            "Symbol": "$"
+        }
+    },
+    "ResellerId": "54321",
+    "Token": "eyIkdHlwZSI....IXBAfqyMkvrqPe9g"
+}
+```
+
+
+
+Eg
+Javascript ajax request (product with finishing config required, eg eyelets)
+```javascript
+    $.ajax({
+      url: "/man/pricing/wideFormat",
+      dataType: "json",
+      type : "POST",
+      data: {
+          productId: "12345",
+          quantity: 3,
+          kinds: 2,
+          finishedSize: { width: 950, height: 1200 },
+	      finishing:[{
+		        finishingId: "b1654e5e-b5f7-4f54-9075-ed32849ff683",
+		        config:{
+			        "Spacing": "15cm"
+		        }
+	        }]
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "Expires": "2018-08-27T00:00:00+08:00",
+    "Price": {
+        "ExTax": 77.22,
+        "Tax": 7.72,
+        "IncTax": 84.94,
+        "Currency": {
+            "Code": "AUD",
+            "Symbol": "$"
+        }
+    },
+    "ResellerId": "54321",
+    "Token": "eyIkdHlwZSI....IXBAfqyMkvrqPe9g"
+}
+```
+
+
+

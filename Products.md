@@ -35,7 +35,7 @@ Response
             },
             "Links": [
                 {
-                    "Uri": "http://localhost:50595/man/Products/285",
+                    "Uri": "http://tempuri.org/man/Products/285",
                     "Relation": "self",
                     "MediaType": "application/vnd.cmykhub+json"
                 }
@@ -104,6 +104,86 @@ Response
     "Links": [
         {
             "Uri": "http://tempuri.org/man/Products/206",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```
+
+
+
+
+<span style="color: blue">**GET**</span> /man/wideformat/products
+
+Returns wide format products optionally filtered by name.
+
+Eg
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/wideformat/products",
+      dataType: "json",
+      type : "GET",
+      data: {
+          name: "canvas"
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "Items": [
+        {
+            "Id": "bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
+            "Name": "Canvas Poster 1 Side",
+            "Description": "Canvas Poster 1 Side",
+            "Code": "bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
+            "ProductGroup": null,
+            "Links": [
+                {
+                    "Uri": "http://tempuri.org/man/WideFormat/Products/bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
+                    "Relation": "self",
+                    "MediaType": "application/vnd.cmykhub+json"
+                }
+            ]
+        }
+    ],
+    "Links": [
+        {
+            "Uri": "http://tempuri.org/man/WideFormat/Products",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```
+
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/wideformat/products/bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
+      dataType: "json",
+      type : "GET",
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "Id": "bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
+    "Name": "Canvas Poster 1 Side",
+    "Description": "Canvas Poster 1 Side",
+    "Code": "bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
+    "ProductGroup": null,
+    "Links": [
+        {
+            "Uri": "http://tempuri.org/man/WideFormat/Products/bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
             "Relation": "self",
             "MediaType": "application/vnd.cmykhub+json"
         }

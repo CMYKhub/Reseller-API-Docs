@@ -272,3 +272,61 @@ Response
     ]
 }
 ```
+
+
+## From Wide Format Specification
+Orders can be placed with wide format product specification.
+
+Eg
+Javascript ajax request
+```javascript
+    $.ajax({
+      url: "/man/orders",
+      dataType: "json",
+      type : "POST",
+      data: {
+          wideFormat: {
+          		productId:"36db0a24-9cb7-4f54-8bee-284fcefbcd4c",
+          		quantity:2,
+          		kinds:1,
+          		finishedSize:{ "Width":950, "Height":1400},
+          		finishing:[{
+          			finishingId:"b1654e5e-b5f7-4f54-9075-ed32849ff683",
+          			config:{
+          				spacing:"15cm"
+          			}
+          		}]
+          	}
+          },
+          reference: "MYREF: 653",
+          notes: "Logo Colour A26"
+      },
+      success : function(r) {
+        console.log(r);
+      }
+    });
+```
+Response
+```json
+{
+    "OrderId": "872492",
+    "ResellerId": 9999,
+    "Links": [
+        {
+            "Uri": "https://hublink.api.cmykhub.com/man/orders/872492",
+            "Relation": "self",
+            "MediaType": "application/vnd.cmykhub+json"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/accounts/payments?orderId=872492",
+            "Relation": "http://schemas.cmykhub.com/api/orders/relations/payment",
+            "MediaType": "text/html"
+        },
+        {
+            "Uri": "https://hublink.api.cmykhub.com/pp/orders?orderId=872492",
+            "Relation": "http://schemas.cmykhub.com/api/prepress/relations/orders/artwork",
+            "MediaType": "application/vnd.cmykhub+json"
+        }
+    ]
+}
+```

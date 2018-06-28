@@ -55,6 +55,29 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
+  /wideformat/products:
+    get:
+      operationId: getWideFormatProducts
+      summary: Returns all wide format products
+      description: Returns all wide format products
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Filters products by name
+      responses:
+        200:
+          description: Wide Format Products Resource
+          schema:
+            type: object
+        401:
+          $ref: "#/responses/Unauthorized"
   /paper:
     get:
       operationId: getPapers
@@ -208,6 +231,61 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
+  /pricing/wideformat:
+    post:
+      operationId: getWideFormatPrice
+      summary: Creates a price for a wide format product
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: wizard
+          in: body
+          required: true
+          description: The details of the wide format product to price
+          schema:
+            type: object
+            required:
+              - productId
+              - quantity
+              - kinds
+            properties:
+              productId:
+                type: string
+                description: The id of the product to price
+              finishedSize:
+                $ref: "#/definitions/Size"
+              quantity:
+                type: integer
+                description: The number of finished items of each kind
+              kinds:
+                type: integer
+                description: The number of different kinds
+              deliveryType:
+                type: integer
+                description: The type of delivery (0=To Reseller, 1=Pickup, 2=To Customer)
+              finishing:
+                type: array
+                description: Finishing to apply to this product
+                items:
+                  type: object
+                  properties:
+                    finishingId:
+                      type: string
+                      description: The id of the finishing
+                    config:
+                      type: object
+                      description: The configuration settings for the finishing. Keys relate to the configuration option
+      responses:
+        200:
+          description: Wide Format Product Price Resource
+        400:
+          description: Bad request, invalid wide format product wizard
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
   /orders:
     get:
       operationId: getOrders
@@ -301,6 +379,12 @@ paths:
     patch:
       operationId: patch artwork file
       summary: Patch properties of the artwork file
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the order
+          type: string
       consumes:
         - application/json-patch+json
       responses:
@@ -314,6 +398,11 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the order
+          type: string
         - name: artwork
           in: body
           required: true
@@ -360,6 +449,12 @@ paths:
     post:
       operationId: postArtworkContent
       summary: Upload artwork content stream
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the order
+          type: string
       description: Chunking headers supported
       consumes:
         - application/octet-stream
