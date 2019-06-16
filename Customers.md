@@ -10,12 +10,9 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/customers",
+      url: "/man/customers?customerId=4306",
       dataType: "json",
       type : "GET",
-      data: {
-          customerId: "4306"
-      },
       success : function(r) {
         console.log(r);
       }
