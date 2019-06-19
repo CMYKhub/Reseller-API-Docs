@@ -58,7 +58,8 @@ Response
         "Tax": 32,
         "IncTax": 352,
         "Currency": {
-            "Code": "AUD"
+            "Code": "AUD",
+			"Symbol": "$"
         }
     },
     "ResellerId": "54321",
@@ -105,7 +106,7 @@ Javascript ajax request
       data: {
           quantity: 1000,
           orientation: 0,
-          finishedSize: { width: 205, height: 280 },
+          finishedSize: { width: 210, height: 297 },
           bindingId: "1",
           printType: 2,
           body:{
@@ -127,7 +128,8 @@ Response
         "Tax": 159.84,
         "IncTax": 1758.23,
         "Currency": {
-            "Code": "AUD"
+            "Code": "AUD",
+			"Symbol": "$"
         }
     },
     "ResellerId": "54321",
@@ -159,7 +161,7 @@ Javascript ajax request
       data: {
           quantity: 1000,
           orientation: 0,
-          finishedSize: { width: 205, height: 280 },
+          finishedSize: { width: 210, height: 297 },
           bindingId: "1",
           printType: 2,
           body:{
@@ -167,7 +169,8 @@ Javascript ajax request
           	pp: 32
           },
           cover:{
-          	productId: "1400"
+          	productId: "1400",
+			pp: 2
           }
       },
       success : function(r) {
@@ -184,7 +187,8 @@ Response
         "Tax": 159.84,
         "IncTax": 1758.23,
         "Currency": {
-            "Code": "AUD"
+            "Code": "AUD",
+			"Symbol": "$"
         }
     },
     "ResellerId": "54321",
@@ -216,7 +220,7 @@ Javascript ajax request
       data: {
           quantity: 1000,
           orientation: 0,
-          finishedSize: { width: 205, height: 280 },
+          finishedSize: { width: 210, height: 297 },
           bindingId: "1",
           printType: 2,
           body:{
@@ -227,7 +231,7 @@ Javascript ajax request
           	paperId:"163",
           	pp:2,
           	finishing:[
-          		{ finishingId:"142", noItems:250}
+          		{ finishingId:"1", noItems:250}
           		]
           }
       },
@@ -245,7 +249,8 @@ Response
         "Tax": 178.55,
         "IncTax": 1964.01,
         "Currency": {
-            "Code": "AUD"
+            "Code": "AUD",
+			"Symbol": "$"
         }
     },
     "ResellerId": "54321",
@@ -284,7 +289,7 @@ Javascript ajax request (product with no finishing config required)
       dataType: "json",
       type : "POST",
       data: {
-          productId: "12345",
+          productId: "01483075-4937-4f74-8de9-9b8d67aa647d",
           quantity: 3,
           kinds: 2,
           finishedSize: { width: 950, height: 1200 }
@@ -322,12 +327,12 @@ Javascript ajax request (product with finishing config required, eg eyelets)
       dataType: "json",
       type : "POST",
       data: {
-          productId: "12345",
+          productId: "21eb8be8-fbf0-4c0d-806e-24cebbb9de5b",
           quantity: 3,
           kinds: 2,
           finishedSize: { width: 950, height: 1200 },
 	      finishing:[{
-		        finishingId: "b1654e5e-b5f7-4f54-9075-ed32849ff683",
+		        finishingId: "b1f1710c-deb6-4a6a-aaa7-98c5b72d3246",
 		        config:{
 			        "Spacing": "15cm"
 		        }
