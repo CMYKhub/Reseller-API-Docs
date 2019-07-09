@@ -9,12 +9,9 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/products",
+      url: "/man/products?name=gloss",
       dataType: "json",
       type : "GET",
-      data: {
-          name: "gloss"
-      },
       success : function(r) {
         console.log(r);
       }
@@ -122,7 +119,7 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/wideformat/products",
+      url: "/man/wideformat/products?name=canvas",
       dataType: "json",
       type : "GET",
       data: {

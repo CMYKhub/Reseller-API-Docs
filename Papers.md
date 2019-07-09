@@ -9,12 +9,9 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/papers",
+      url: "/man/papers?name=uncoated",
       dataType: "json",
       type : "GET",
-      data: {
-          name: "uncoated"
-      },
       success : function(r) {
         console.log(r);
       }

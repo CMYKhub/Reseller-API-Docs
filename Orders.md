@@ -11,12 +11,9 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/orders",
+      url: "/man/orders?orderId=139424",
       dataType: "json",
       type : "GET",
-      data: {
-          orderId: "139424"
-      },
       success : function(r) {
         console.log(r);
       }
@@ -172,15 +169,14 @@ Javascript ajax request
       type : "POST",
       data: {
           product: {
+        	  productId:"36db0a24-9cb7-4f54-8bee-284fcefbcd4c",
               quantity: 1000,
-              orientation: 0,
+              kinds: 2,
               finishedSize: { width: 205, height: 280 },
-              bindingId: "1",
-              printType: 2,
-              body:{
-              	paperId: "215",
-              	pp: 32
-              }
+			  finishing:[ {
+				finishingId: "14",
+				noItems: 500
+              } ]
           },
           reference: "MYREF: 653",
           notes: "Logo Colour A26"
@@ -237,7 +233,8 @@ Javascript ajax request
               	pp: 32
               },
               cover:{
-              	productId: "1400"
+              	productId: "1400",
+				pp: "2"
               }
           },
           reference: "MYREF: 653",

@@ -9,12 +9,9 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/finishings",
+      url: "/man/finishings?name=fold",
       dataType: "json",
       type : "GET",
-      data: {
-          name: "fold"
-      },
       success : function(r) {
         console.log(r);
       }
@@ -110,15 +107,9 @@ Eg
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/finishings",
+      url: "/man/finishings?width=210&height=297&paperWeight=150&printType=1",
       dataType: "json",
-      type : "GET",
-      data: {
-          width: 210,
-          height: 297,
-          paperWeight: 150,
-          printType: 1
-      },
+      type : "GET",      
       success : function(r) {
         console.log(r);
       }
@@ -170,19 +161,9 @@ Response
 Javascript ajax request
 ```javascript
     $.ajax({
-      url: "/man/finishings",
+      url: "/man/finishings?width=210&height=297&paperWeight=150&printType=1&pp=32&orientation=0",
       dataType: "json",
-      type : "GET",
-      data: {
-          width: 210,
-          height: 297,
-          paperWeight: 150,
-          printType: 1,
-          book:{
-            pp: 32,
-            orientation: 0
-            }
-      },
+      type : "GET",     
       success : function(r) {
         console.log(r);
       }
