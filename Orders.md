@@ -1,25 +1,28 @@
 # Orders
 
 
-<span style="color: blue">**GET**</span> /man/orders
+<span style="color: blue">**GetOrdersAsync**</span>
 
 Returns orders for the reseller specified by the ResellerID header.
 
 Orders can be filtered by orderId to return a single order.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/orders?orderId=139424",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get all orders
+```csharp
+	public async Task<IEnumerable<Order>> GetOrders()
+	{
+		return await ManufacturingClient.GetOrdersAsync();
+	}
 ```
-Response
+Eg .Net C# request to get order from order id
+```csharp
+	public async Task<Order> GetOrder(string id)
+	{
+		return await ManufacturingClient.GetOrderAsync(id);
+	}
+```
+
+Json Response
 ```json
 {
     "OrderId": "139424",
@@ -65,29 +68,39 @@ Response
 
 
 
-<span style="color: blue">**POST**</span> /man/orders
+<span style="color: blue">**CreateOrderAsync**</span>
 
 Creates an order for print.
 
 ## Existing Quote
 Orders can be placed with reference to an existing quote.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/orders",
-      dataType: "json",
-      type : "POST",
-      data: {
-          quoteId: "98765"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to create order from a request containing a quote id
+```csharp
+#region Assembly CMYKhub.ResellerApi.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+#endregion
+
+namespace CMYKhub.ResellerApi.Client.Manufacturing
+{
+    public class CreateOrderFromQuoteRequest : CreateOrderRequest
+    {
+        public CreateOrderFromQuoteRequest();
+
+        public string QuoteId { get; set; }
+    }
+}
+
+_____
+
+	var request = new CreateOrderFromQuoteRequest { QuoteId = "98765" };
+	
+	public async Task<CreatedOrderResource> CreateOrder(CreateOrderFromQuoteRequest request)
+	{
+		return await ManufacturingClient.CreateOrderAsync(request);
+	}
 ```
-Response
+
+Json Response
 ```json
 {
     "OrderId": "139424",
@@ -115,24 +128,44 @@ Response
 ## Previous Product Price
 Orders can be placed with reference to a price generated previously.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/orders",
-      dataType: "json",
-      type : "POST",
-      data: {
-          token: "56dfs6789df6789gdf8769",
-          reference: "MYREF: 653",
-          notes: "Logo Colour A26"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to create an order from a token
+```csharp
+#region Assembly CMYKhub.ResellerApi.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+#endregion
+
+namespace CMYKhub.ResellerApi.Client.Manufacturing
+{
+    public abstract class CreateOrderFromWizardRequest : CreateOrderRequest
+    {
+        protected CreateOrderFromWizardRequest();
+
+        public string Notes { get; set; }
+        public string Reference { get; set; }
+    }
+
+    public class CreateOrderFromTokenRequest : CreateOrderFromWizardRequest
+    {
+        public CreateOrderFromTokenRequest();
+
+        public string Token { get; set; }
+    }
+}
+
+_____
+
+	request = new CreateOrderFromTokenRequest
+	{
+		Token = "BEDD7831-75C5-48DD-861C-E8181EE66FCE",
+		Reference = "MYREF: 653",
+		Notes = "Logo Colour A26"
+	};
+
+	public async Task<CreatedOrderResource> CreateOrder(CreateOrderFromTokenRequest request)
+	{
+		return await ManufacturingClient.CreateOrderAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "OrderId": "139424",
@@ -161,32 +194,54 @@ Response
 Orders can be placed with product specification.
 
 Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/orders",
-      dataType: "json",
-      type : "POST",
-      data: {
-          product: {
-        	  productId:"36db0a24-9cb7-4f54-8bee-284fcefbcd4c",
-              quantity: 1000,
-              kinds: 2,
-              finishedSize: { width: 205, height: 280 },
-			  finishing:[ {
-				finishingId: "14",
-				noItems: 500
-              } ]
-          },
-          reference: "MYREF: 653",
-          notes: "Logo Colour A26"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+.Net C# request to create an order from a product
+```csharp
+#region Assembly CMYKhub.ResellerApi.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+#endregion
+
+namespace CMYKhub.ResellerApi.Client.Manufacturing
+{
+    public abstract class CreateOrderFromWizardRequest : CreateOrderRequest
+    {
+        protected CreateOrderFromWizardRequest();
+
+        public string Notes { get; set; }
+        public string Reference { get; set; }
+    }
+
+    public class CreateOrderFromProductRequest : CreateOrderFromWizardRequest
+    {
+        public CreateOrderFromProductRequest();
+
+        public StandardPriceRequest Product { get; set; }
+    }
+}
+
+_____
+
+	request = new CreateOrderFromProductRequest
+	{
+		Product = new StandardPriceRequest
+		{
+			ProductId = "01B80D34-4B6C-4D80-9C02-501762670EEE",
+			Quantity = 1000,
+			Kinds = 2,
+			FinishedSize = new Size { Width = 205, Height = 280 },
+			Finishing = new[]
+			{
+				new PrintWizardFinishing {FinishingId = "14", NoItems = 500}
+			}
+		},
+		Reference = "MYREF: 653",
+		Notes = "Logo Colour A26"
+	};
+
+	public async Task<CreatedOrderResource> CreateOrder(CreateOrderFromProductRequest request)
+	{
+		return await ManufacturingClient.CreateOrderAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "OrderId": "139424",
@@ -215,37 +270,61 @@ Response
 Orders can be placed with booklet specification. Any booklet specification is valid, see [Pricing](Pricing.md) for more details on booklet specifications.
 
 Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/orders",
-      dataType: "json",
-      type : "POST",
-      data: {
-          booklet: {
-              quantity: 1000,
-              orientation: 0,
-              finishedSize: { width: 205, height: 280 },
-              bindingId: "1",
-              printType: 2,
-              body:{
-              	paperId: "215",
-              	pp: 32
-              },
-              cover:{
-              	productId: "1400",
-				pp: "2"
-              }
-          },
-          reference: "MYREF: 653",
-          notes: "Logo Colour A26"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+.Net C# request to create an order from a booklet
+```csharp
+#region Assembly CMYKhub.ResellerApi.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+#endregion
+
+namespace CMYKhub.ResellerApi.Client.Manufacturing
+{
+    public abstract class CreateOrderFromWizardRequest : CreateOrderRequest
+    {
+        protected CreateOrderFromWizardRequest();
+
+        public string Notes { get; set; }
+        public string Reference { get; set; }
+    }
+
+    public class CreateOrderFromBookletRequest : CreateOrderFromWizardRequest
+    {
+        public CreateOrderFromBookletRequest();
+
+        public BookletProductRequest Booklet { get; set; }
+    }
+}
+
+_____
+
+	request = new CreateOrderFromBookletRequest
+	{
+		Booklet = new BookletProductRequest
+		{
+			Quantity = 1000,
+			Orientation = 0,
+			FinishedSize = new Size { Width = 210, Height = 297 },
+			BindingId = "1",
+			PrintType = 2,
+			Body = new BookletBodySection
+			{
+				PaperId = "215",
+				Pp = 32
+			},
+			Cover = new BookletCoverSection
+			{
+				ProductId = "1400",
+				Pp = 2
+			}
+		},
+		Reference = "MYREF: 653",
+		Notes = "Logo Colour A26"
+	};
+
+	public async Task<CreatedOrderResource> CreateOrder(CreateOrderFromBookletRequest request)
+	{
+		return await ManufacturingClient.CreateOrderAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "OrderId": "139424",
@@ -275,35 +354,58 @@ Response
 Orders can be placed with wide format product specification.
 
 Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/orders",
-      dataType: "json",
-      type : "POST",
-      data: {
-          wideFormat: {
-          		productId:"36db0a24-9cb7-4f54-8bee-284fcefbcd4c",
-          		quantity:2,
-          		kinds:1,
-          		finishedSize:{ "Width":950, "Height":1400},
-          		finishing:[{
-          			finishingId:"b1654e5e-b5f7-4f54-9075-ed32849ff683",
-          			config:{
-          				spacing:"15cm"
-          			}
-          		}]
-          	}
-          },
-          reference: "MYREF: 653",
-          notes: "Logo Colour A26"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+.Net C# request to create an order from a wide format product
+```csharp
+#region Assembly CMYKhub.ResellerApi.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+#endregion
+
+namespace CMYKhub.ResellerApi.Client.Manufacturing
+{
+    public abstract class CreateOrderFromWizardRequest : CreateOrderRequest
+    {
+        protected CreateOrderFromWizardRequest();
+
+        public string Notes { get; set; }
+        public string Reference { get; set; }
+    }
+
+    public class CreateOrderFromWideFormatRequest : CreateOrderFromWizardRequest
+    {
+        public CreateOrderFromWideFormatRequest();
+
+        public WideFormatPriceRequest WideFormat { get; set; }
+    }
+}
+
+_____
+
+	request = new CreateOrderFromWideFormatRequest
+	{
+		WideFormat = new WideFormatPriceRequest
+		{
+			ProductId = "F74ADCFE-AAD5-43EB-A9E5-66144B8A762F",
+			Quantity = 2,
+			Kinds = 1,
+			FinishedSize = new Size { Width = 950, Height = 1500 },
+			Finishing = new[]
+			{
+				new WideFormatWizardFinishing
+				{
+					FinishingId = "BDAF621E-18C4-4CF0-AF3D-541EC894F67A",
+					Config = new Dictionary<string, string> {{"Spacing", "15cm"}}
+				}
+			}
+		},
+		Reference = "MYREF: 653",
+		Notes = "Logo Colour A26"
+	};
+			
+    public async Task<CreatedOrderResource> CreateOrder(CreateOrderFromWideFormatRequest request)
+    {
+    	return await ManufacturingClient.CreateOrderAsync(request);
+    }
 ```
-Response
+Json Response
 ```json
 {
     "OrderId": "872492",

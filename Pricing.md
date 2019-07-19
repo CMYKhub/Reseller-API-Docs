@@ -10,7 +10,7 @@ that the price may be honored. See the [Ordering](Orders.md) endpoint for more d
 
 ## Standard products
 
-<span style="color: blue">**GET**</span> /man/pricing/standard
+<span style="color: blue">**CreatePriceAsync**</span>
 
 Creates a price for the given product details.
 
@@ -30,26 +30,26 @@ additional to the finishing included with the standard product. EG bundling. See
 ***NoItems*** is used to indicate how many of the final product should be finished.
 This must be specified, if unsure enter the same as the quantity.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/pricing/standard",
-      dataType: "json",
-      type : "POST",
-      data: {
-          productId: "12345",
-          quantity: 1000,
-          kinds: 2,
-          finishedSize: { width: 205, height: 280 },
-          finishing: [ { finishingId: "9876", noItems: 500 } ]
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Standard Price
+```csharp
+	public StandardPriceRequest PopulateStandardRequest()
+	{
+		return new StandardPriceRequest
+		{
+			ProductId = "12345",
+			Quantity = 1000,
+			Kinds = 2,
+			FinishedSize = new Size { Width = 205, Height = 280 },
+			Finishing = new[] { new PrintWizardFinishing { FinishingId = "9876", NoItems = 500 } }
+		};
+	}
+
+	public async Task<ProductPrice> CreateStandardPricing(StandardPriceRequest request)
+	{
+		return await ManufacturingClient.CreatePriceAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Expires": "2017-01-01T00:00:00.000Z",
@@ -73,7 +73,7 @@ Response
 
 ## Booklet products
 
-<span style="color: blue">**GET**</span> /man/pricing/booklet
+<span style="color: blue">**CreatePriceAsync**</span>
 
 Creates a price for the given booklet details.
 
@@ -96,30 +96,31 @@ product required. Units are millimetres.
 ***Body.PaperID*** is required. This specifies the paper to be used for the body section. See [Paper](Papers.md) for available paper options.
 ***Body.PP*** is required. This specifies the number of printed pages for the body section. This must be a multiple of 4.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/pricing/booklet",
-      dataType: "json",
-      type : "POST",
-      data: {
-          quantity: 1000,
-          orientation: 0,
-          finishedSize: { width: 210, height: 297 },
-          bindingId: "1",
-          printType: 2,
-          body:{
-          	paperId: "215",
-          	pp: 32
-          },
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Booklet Price
+```csharp
+	public BookletProductRequest PopulateBookletRequest()
+	{
+		return new BookletProductRequest
+		{
+			Quantity = 1000,
+			Orientation = 0,
+			FinishedSize = new Size { Width = 210, Height = 297 },
+			BindingId = "1",
+			PrintType = 2,
+			Body = new BookletBodySection
+			{
+				PaperId = "215",
+				Pp = 32
+			}
+		};
+	}
+	
+	public async Task<ProductPrice> CreateBookletPricing(BookletProductRequest request)
+	{
+		return await ManufacturingClient.CreatePriceAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Expires": "2017-01-01T00:00:00.000Z",
@@ -151,34 +152,37 @@ additional to the finishing included with the standard product. EG bundling. See
 ***NoItems*** is used to indicate how many of the final product should be finished.
 This must be specified, if unsure enter the same as the quantity.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/pricing/booklet",
-      dataType: "json",
-      type : "POST",
-      data: {
-          quantity: 1000,
-          orientation: 0,
-          finishedSize: { width: 210, height: 297 },
-          bindingId: "1",
-          printType: 2,
-          body:{
-          	paperId: "215",
-          	pp: 32
-          },
-          cover:{
-          	productId: "1400",
-			pp: 2
-          }
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Booklet Price
+```csharp
+	public BookletProductRequest PopulateBookletRequest()
+	{
+		return new BookletProductRequest
+		{
+			Quantity = 1000,
+			Orientation = 0,
+			FinishedSize = new Size { Width = 210, Height = 297 },
+			BindingId = "1",
+			PrintType = 2,
+			Body = new BookletBodySection
+			{
+				PaperId = "215",
+				Pp = 32
+			},
+			Cover = new BookletCoverSection
+			{
+				PaperId = "1400",
+				Pp = 2
+			}
+		};
+	}
+	
+	public async Task<ProductPrice> CreateBookletPricing(BookletProductRequest request)
+	{
+		return await ManufacturingClient.CreatePriceAsync(request);
+	}
 ```
-Response
+Json Response
+
 ```json
 {
     "Expires": "2017-01-01T00:00:00.000Z",
@@ -210,37 +214,38 @@ additional to the finishing included with the standard product. EG bundling. See
 ***NoItems*** is used to indicate how many of the final product should be finished.
 This must be specified, if unsure enter the same as the quantity.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/pricing/booklet",
-      dataType: "json",
-      type : "POST",
-      data: {
-          quantity: 1000,
-          orientation: 0,
-          finishedSize: { width: 210, height: 297 },
-          bindingId: "1",
-          printType: 2,
-          body:{
-          	paperId: "215",
-          	pp: 32
-          },
-          cover:{
-          	paperId:"163",
-          	pp:2,
-          	finishing:[
-          		{ finishingId:"1", noItems:250}
-          		]
-          }
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Booklet Price
+```csharp
+	public BookletProductRequest PopulateBookletRequest()
+	{
+		return new BookletProductRequest
+		{
+			Quantity = 1000,
+			Orientation = 0,
+			FinishedSize = new Size { Width = 210, Height = 297 },
+			BindingId = "1",
+			PrintType = 2,
+			Body = new BookletBodySection
+			{
+				PaperId = "215",
+				Pp = 32
+			},
+			Cover = new BookletCoverSection
+			{
+				PaperId = "163",
+				Pp = 2,
+				Finishing = new[] { new PrintWizardFinishing { FinishingId = "1", NoItems = 250 } }
+			}
+		};
+	}
+	
+	public async Task<ProductPrice> CreateBookletPricing(BookletProductRequest request)
+	{
+		return await ManufacturingClient.CreatePriceAsync(request);
+	}
 ```
-Response
+Json Response
+
 ```json
 {
     "Expires": "2017-01-01T00:00:00.000Z",
@@ -261,7 +266,7 @@ Response
 
 ## Wide Format products
 
-<span style="color: blue">**GET**</span> /man/pricing/wideFormat
+<span style="color: blue">**CreatePriceAsync**</span>
 
 Creates a price for the given wide format product details.
 
@@ -281,25 +286,25 @@ part of the product and required configuration. EG for a product with eyelets, t
 Config is used to configure the values for the fields
 
 
-Eg
-Javascript ajax request (product with no finishing config required)
-```javascript
-    $.ajax({
-      url: "/man/pricing/wideFormat",
-      dataType: "json",
-      type : "POST",
-      data: {
-          productId: "01483075-4937-4f74-8de9-9b8d67aa647d",
-          quantity: 3,
-          kinds: 2,
-          finishedSize: { width: 950, height: 1200 }
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Wide Format Price
+```csharp
+	public WideFormatPriceRequest PopulateWideFormatRequest()
+	{
+		return new WideFormatPriceRequest
+		{
+			ProductId = "01483075-4937-4f74-8de9-9b8d67aa647d",
+			Quantity = 3,
+			Kinds = 2,
+			FinishedSize = new Size { Width = 950, Height = 1200 }
+		};
+	}
+
+	public async Task<ProductPrice> CreateWideFormatPricing(WideFormatPriceRequest request)
+	{
+		return await ManufacturingClient.CreatePriceAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Expires": "2018-08-27T00:00:00+08:00",
@@ -319,31 +324,34 @@ Response
 
 
 
-Eg
-Javascript ajax request (product with finishing config required, eg eyelets)
-```javascript
-    $.ajax({
-      url: "/man/pricing/wideFormat",
-      dataType: "json",
-      type : "POST",
-      data: {
-          productId: "21eb8be8-fbf0-4c0d-806e-24cebbb9de5b",
-          quantity: 3,
-          kinds: 2,
-          finishedSize: { width: 950, height: 1200 },
-	      finishing:[{
-		        finishingId: "b1f1710c-deb6-4a6a-aaa7-98c5b72d3246",
-		        config:{
-			        "Spacing": "15cm"
-		        }
-	        }]
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+
+Eg .Net C# request to get Wide Format Price (product with finishing config required, eg eyelets)
+```csharp
+	public WideFormatPriceRequest PopulateWideFormatRequest()
+	{
+		return new WideFormatPriceRequest
+		{
+			ProductId = "01483075-4937-4f74-8de9-9b8d67aa647d",
+			Quantity = 3,
+			Kinds = 2,
+			FinishedSize = new Size { Width = 950, Height = 1200 },
+			Finishing = new[]
+			{
+				new WideFormatWizardFinishing
+				{
+					FinishingId = "b1f1710c-deb6-4a6a-aaa7-98c5b72d3246",
+					Config = new Dictionary<string, string> {{"Spacing", "15cm"}}
+				}
+			}
+		};
+	}
+
+	public async Task<ProductPrice> CreateWideFormatPricing(WideFormatPriceRequest request)
+	{
+		return await ManufacturingClient.CreatePriceAsync(request);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Expires": "2018-08-27T00:00:00+08:00",

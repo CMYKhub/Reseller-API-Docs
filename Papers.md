@@ -1,23 +1,23 @@
 # Papers
 
 
-<span style="color: blue">**GET**</span> /man/papers
+<span style="color: blue">**GetPapersAsync**</span>
+<br/>
+<span style="color: blue">**GetPapersByNameAsync**</span>
 
 Returns papers optionally filtered by name.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/papers?name=uncoated",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get all papers, or papers which match the name
+```csharp
+	public async Task<IEnumerable<Paper>> GetPapers(string name = null)
+	{
+		var papersAsync = string.IsNullOrEmpty(name)
+			? ManufacturingClient.GetPapersAsync()
+			: ManufacturingClient.GetPapersByNameAsync(name);
+		return await papersAsync;
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Items": [
@@ -47,18 +47,16 @@ Response
 }
 ```
 
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/papers/356",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+<span style="color: blue">**GetPaperAsync**</span>
+
+Eg .Net C# request to get all papers, or papers which match the name
+```csharp
+	public async Task<Paper> GetPaper(string id)
+	{
+		return await ManufacturingClient.GetPaperAsync(id);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Id": "356",
