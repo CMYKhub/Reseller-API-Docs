@@ -37,3 +37,5 @@ There are two clients which need to be accessed to call the methods below:
 * [Finishing's](Finishings.md)
 * [Products](Products.md)
 * [Pricing](Pricing.md)
+* [Sizes](Sizes.md)
+* [Quote Types](QuoteTypes.md)

@@ -86,7 +86,7 @@ The parameters required are the base requirements for all booklet quotes.
 ***Orientation*** is required. This specifies whether the finished booklet is portrait or landscape. Portrait = 0, Landscape = 1.
 
 ***Finished size*** is optional. This specifies the final size of the
-product required. Units are millimetres.
+product required. Units are millimetres.  The size needs to conform with the standard size types.
 
 ***Binding ID*** is required. This is the binding finishing. See [Finishing](Finishings.md) for available binding options.
 
