@@ -1,23 +1,23 @@
 # Finishings
 
 
-<span style="color:blue">**GET**</span> /finishing
+<span style="color:blue">**GetFinishingsAsync**</span>
+<br/>
+<span style="color:blue">**GetFinishingsByNameAsync**</span>
 
 Returns finishings optionally filtered by name.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/finishings?name=fold",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get all finishings, or finishings which match the name
+```csharp
+	public async Task<IEnumerable<Finishing>> GetFinishings(string name = null)
+	{
+		var asyncFinishings = string.IsNullOrEmpty(name)
+			? ManufacturingClient.GetFinishingsAsync()
+			: ManufacturingClient.GetFinishingsByNameAsync(name);
+		return await asyncFinishings;
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Items": [
@@ -46,19 +46,16 @@ Response
     ]
 }
 ```
+<span style="color:blue">**GetFinishingAsync**</span>
 
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/finishings/85",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get finishing by id
+```csharp
+	public async Task<Finishing> GetFinishing(string id)
+	{
+		return await ManufacturingClient.GetFinishingAsync(id);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Id": "85",
@@ -80,7 +77,7 @@ Response
 
 ## Finishing/Available
 
-<span style="color:blue">**GET**</span> /finishing/available
+<span style="color:blue">**GetFinishingsByAvailableAsync**</span>
 
 Returns finishings available for a given specification.
 
@@ -103,19 +100,22 @@ NB if any book parameters are specified then all
 book parameters must be specified.
 
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/finishings?width=210&height=297&paperWeight=150&printType=1",
-      dataType: "json",
-      type : "GET",      
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get finishings
+```csharp
+	private PrintTypes[] GetPrintType = { PrintTypes.Offset, PrintTypes.Digital };
+
+	public async Task<IEnumerable<Finishing>> GetFinishings(int width, int height, int paperWeight, int printType)
+	{
+		return await ManufacturingClient.GetFinishingsByAvailableAsync(new FinishingAvailableSpec
+		{
+			Width = width,
+			Height = height,
+			PaperWeight = paperWeight,
+			PrintType = GetPrintType[printType]
+		});
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Items": [
@@ -158,18 +158,24 @@ Response
 
 **For booklet finishing:**
 
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/finishings?width=210&height=297&paperWeight=150&printType=1&pp=32&orientation=0",
-      dataType: "json",
-      type : "GET",     
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get finishings
+```csharp
+	private PrintTypes[] GetPrintType = { PrintTypes.Offset, PrintTypes.Digital };
+	private Orientations[] GetOrientations = { Orientations.Landscape, Orientations.Portrait };
+	
+	public async Task<IEnumerable<Finishing>> GetFinishings(int width, int height, int paperWeight, int printType, int pp, int orientation)
+	{
+		return await ManufacturingClient.GetFinishingsByAvailableAsync(new FinishingAvailableSpec
+		{
+			Width = width,
+			Height = height,
+			PaperWeight = paperWeight,
+			PrintType = GetPrintType[printType],
+			Book = new FinishingAvailableBookletSpec { Orientation = GetOrientations[orientation], Pp = pp }
+		});
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Items": [
