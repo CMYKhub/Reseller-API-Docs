@@ -1,27 +1,29 @@
 # Customers
 
-<span style="color: blue">**GET**</span> /man/customers
+<span style="color: blue">**GetCustomersAsync**</span>
+<br/>
+<span style="color: blue">**GetCustomerAsync**</span>
 
 Returns customers for the reseller specified by the ResellerID header.
 
 Customers can be filtered by customerId to return a single customer.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/customers",
-      dataType: "json",
-      type : "GET",
-      data: {
-          customerId: "4306"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get all customers
+```csharp
+	public async Task<IEnumerable<Customer>> GetCustomers()
+	{
+		return await ManufacturingClient.GetCustomersAsync();
+	}
 ```
-Response
+Eg .Net C# request to get customer from customer id
+```csharp
+	public async Task<Customer> GetCustomer(string id)
+	{
+		return await ManufacturingClient.GetCustomerAsync(id);
+	}
+```
+
+Json Response
 ```json
 {
     "CustomerId": "4306",

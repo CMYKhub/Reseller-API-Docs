@@ -17,7 +17,7 @@ ApiKey: aBcDeFg1234
 ## Links
 Each resource contains a property named "Links". This is an array of links to related resources.
 These are highly preferred over hard-coded urls as urls may change between versions.
-Starting at the base address of (https://hublink.api.cmykhub.com) discovery of urls is possible
+Starting at the base address of (https://api.cmykhub.com) discovery of urls is possible
 to all other resources in the API.
 
 ## SDK's

@@ -1,26 +1,25 @@
 # Products
 
 
-<span style="color: blue">**GET**</span> /man/products
+<span style="color: blue">**GetProductsAsync**</span>
+<br/>
+<span style="color: blue">**GetProductsByNameAsync**</span>
 
 Returns standard products optionally filtered by name.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/products",
-      dataType: "json",
-      type : "GET",
-      data: {
-          name: "gloss"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Products
+```csharp
+	var name = "gloss";
+	
+	public async Task<IEnumerable<Product>> GetProducts(string name = null)
+	{
+		var asyncProducts = string.IsNullOrEmpty(name)
+			? ManufacturingClient.GetProductsAsync()
+			: ManufacturingClient.GetProductsByNameAsync(name);
+		return await asyncProducts;
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Items": [
@@ -78,19 +77,16 @@ Response
     ]
 }
 ```
+<span style="color: blue">**GetProductAsync**</span>
 
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/products/206",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Product by Id
+```csharp
+	public async Task<Product> GetProduct(string id)
+	{
+		return await ManufacturingClient.GetProductAsync(id);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Id": "206",
@@ -114,26 +110,24 @@ Response
 
 
 
-<span style="color: blue">**GET**</span> /man/wideformat/products
+<span style="color: blue">**GetWideFormatProductsAsync**</span>
+<br/>
+<span style="color: blue">**GetWideFormatProductsByNameAsync**</span>
 
 Returns wide format products optionally filtered by name.
 
-Eg
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/wideformat/products",
-      dataType: "json",
-      type : "GET",
-      data: {
-          name: "canvas"
-      },
-      success : function(r) {
-        console.log(r);
-      }
-    });
+Eg .Net C# request to get Wide format Products
+```csharp
+	var name = "canvas"
+	public async Task<IEnumerable<Product>> GetProductsWideFormat(string name = null)
+	{
+		var asyncProducts = string.IsNullOrEmpty(name)
+			? ManufacturingClient.GetWideFormatProductsAsync()
+			: ManufacturingClient.GetWideFormatProductsByNameAsync(name);
+		return await asyncProducts;
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Items": [
@@ -162,18 +156,17 @@ Response
 }
 ```
 
-Javascript ajax request
-```javascript
-    $.ajax({
-      url: "/man/wideformat/products/bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
+<span style="color: blue">**GetWideFormatProductAsync**</span>
+
+
+Eg .Net C# request to get Wide format Product by Id
+```csharp
+	public async Task<Product> GetProductWideFormat(string id)
+	{
+		return await ManufacturingClient.GetWideFormatProductAsync(id);
+	}
 ```
-Response
+Json Response
 ```json
 {
     "Id": "bd69fd35-7860-44b7-9099-e4c9e4fc6aa8",
