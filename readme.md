@@ -29,6 +29,6 @@ to all other resources in the API.
 
 For questions or errors with the documentation please report an [issue](https://github.com/CMYKhub/Reseller-API-Docs/issues/new)
 
-For API access please [contact your local representative](https://www.cmykhub.com/locations.html).
+For API access please [contact your local representative](https://cmykhub.com/locations/).
 
-For reseller enquiries please [register at CMYKhub](https://www.cmykhub.com/register.php)
+For reseller enquiries please [register at CMYKhub](https://cmykhub.com/register/)
