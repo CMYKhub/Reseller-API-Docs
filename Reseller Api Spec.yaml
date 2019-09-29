@@ -42,8 +42,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           required: false
           type: string
           allowEmptyValue: false
@@ -87,8 +87,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           required: false
           type: string
           allowEmptyValue: false
@@ -109,8 +109,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           required: false
           type: string
           allowEmptyValue: false
@@ -131,36 +131,36 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: width
-          in: query
+        - in: query
+          name: width
           required: true
           type: number
           allowEmptyValue: false
           description: The width of the trimmed product in millimetres
-        - name: height
-          in: query
+        - in: query
+          name: height
           required: true
           type: number
           allowEmptyValue: false
           description: The height of the trimmed product in millimetres
-        - name: paperWeight
-          in: query
+        - in: query
+          name: paperWeight
           required: true
           type: number
           allowEmptyValue: false
           description: The weight of the paper in gsm
-        - name: printType
-          in: query
+        - in: query
+          name: printType
           required: false
           type: integer
           description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
-        - name: book.pp
-          in: query
+        - in: query
+          name: book.pp
           required: false
           type: integer
           description: The number of printed pages in the book. NB if any book parameters are specified then all book parameters must be specified
-        - name: book.orientation
-          in: query
+        - in: query
+          name: book.orientation
           required: false
           type: integer
           description: The orientation of the book(0=Portrait, 1=Landscape). NB if any book parameters are specified then all book parameters must be specified
@@ -182,8 +182,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: wizard
-          in: body
+        - in: body
+          name: wizard
           required: true
           description: The details of the product to price
           schema:
@@ -307,8 +307,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: order
-          in: body
+        - in: body
+          name: order
           required: true
           description: Order details
           schema:
@@ -343,8 +343,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
@@ -360,8 +360,8 @@ paths:
       operationId: getOrderArtworkById
       summary: Returns artwork info for an order
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
@@ -380,8 +380,8 @@ paths:
       operationId: patch artwork file
       summary: Patch properties of the artwork file
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
@@ -398,13 +398,13 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
-        - name: artwork
-          in: body
+        - in: body
+          name: artwork
           required: true
           description: Order details
           schema:
