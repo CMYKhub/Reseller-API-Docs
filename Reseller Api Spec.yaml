@@ -452,46 +452,6 @@ paths:
           $ref: "#/responses/Unauthorized"
         409:
           description: When a file attached to this order already exists with the same name
-  /artwork/{id}/content:
-    get:
-      operationId: getArtworkContentById
-      summary: Returns content for an artwork file
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the order
-          type: string
-      produces:
-        - application/octet-stream
-      responses:
-        200:
-          description: Order Artwork Resource
-        401:
-          $ref: "#/responses/Unauthorized"
-        404:
-          $ref: "#/responses/NotFound"
-    post:
-      operationId: postArtworkContent
-      summary: Upload artwork content stream
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the order
-          type: string
-      description: Chunking headers supported
-      consumes:
-        - application/octet-stream
-      responses:
-        200:
-          description: Commit Resource
-        400:
-          description: Bad request
-        401:
-          $ref: "#/responses/Unauthorized"
-        409:
-          description: When a chunking headers specify overlap of bytes
 host: api.cmykhub.com
 securityDefinitions:
   API Key:
