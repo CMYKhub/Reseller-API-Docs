@@ -86,7 +86,8 @@ paths:
         401:
           $ref: "#/responses/Unauthorized"
   /man/customers/{id}:
-    get: getCustomerById
+    get: 
+      operationId: getCustomerById
       summary: Returns customer
       consumes:
         - application/json
@@ -153,7 +154,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /man/paper:
+  /man/papers:
     get:
       operationId: getPapers
       summary: Returns papers optionally filtered by name
@@ -168,6 +169,12 @@ paths:
           type: string
           allowEmptyValue: false
           description: Filters papers by name
+        - in: query
+          name: paperId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Returns the paper for the specified id
       responses:
         200:
           description: Papers Resource
@@ -175,6 +182,28 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
+    get: 
+      operationId: getPapersById
+      summary: Returns paper
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the paper
+          type: string
+      responses:
+        200:
+          description: Paper Resource
+        400:
+          description: Invalid id
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
   /man/finishing:
     get:
       operationId: getFinishings
