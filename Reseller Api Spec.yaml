@@ -394,7 +394,7 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /orders/{id}/artwork:
+  /man/orders/{id}/artwork:
     get:
       operationId: getOrderArtworkById
       summary: Returns artwork info for an order
@@ -415,20 +415,6 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-    patch:
-      operationId: patch artwork file
-      summary: Patch properties of the artwork file
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the order
-          type: string
-      consumes:
-        - application/json-patch+json
-      responses:
-        200:
-          description: Patched Order Artwork Resource
     post:
       operationId: postOrderArtwork
       summary: Upload artwork
