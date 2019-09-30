@@ -286,7 +286,7 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /orders:
+  /man/orders:
     get:
       operationId: getOrders
       summary: Returns orders
@@ -294,6 +294,47 @@ paths:
         - application/json
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: orderId
+          required: false
+          description: The id of the order to be returned
+          type: string
+        - in: query
+          name: resellerId
+          required: false
+          description: The id of the reseller to be used to filter the orders
+          type: string
+        - in: query
+          name: filterBy
+          required: false
+          description: The type of filter to be used on the orders collection
+          type: string
+        - in: query
+          name: filter
+          required: false
+          description: The filter to be used on the orders collection
+          type: string
+        - in: query
+          name: sort
+          required: false
+          description: The field which the orders will be sorted by. Default is DateOrderd
+          type: string
+        - in: query
+          name: asc
+          required: false
+          description: The sort direction. Default is false
+          type: boolean
+        - in: query
+          name: pg
+          required: false
+          description: The page size when returning paged results. Default is 20
+          type: integer
+        - in: query
+          name: ix
+          required: false
+          description: The page index when returning paged results. Default is 0
+          type: integer
       responses:
         200:
           description: Orders Resource
