@@ -32,7 +32,7 @@ paths:
           description: Discovery Resource
         401:
           $ref: "#/responses/Unauthorized"
-  /products:
+  /man/products:
     get:
       operationId: getProducts
       summary: Returns all products
@@ -55,7 +55,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /wideformat/products:
+  /man/wideformat/products:
     get:
       operationId: getWideFormatProducts
       summary: Returns all wide format products
@@ -78,7 +78,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /paper:
+  /man/paper:
     get:
       operationId: getPapers
       summary: Returns papers optionally filtered by name
@@ -100,7 +100,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /finishing:
+  /man/finishing:
     get:
       operationId: getFinishings
       summary: Returns finishings optionally filtered by name
@@ -122,7 +122,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /finishing/available:
+  /man/finishing/available:
     get:
       operationId: getFinishingAvailable
       summary: Returns finishings available for a given specification
@@ -173,7 +173,7 @@ paths:
           description: Bad request
         401:
           $ref: "#/responses/Unauthorized"
-  /pricing/standard:
+  /man/pricing/standard:
     post:
       operationId: getProductPrice
       summary: Creates a price for a standard product
@@ -231,7 +231,7 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /pricing/wideformat:
+  /man/pricing/wideformat:
     post:
       operationId: getWideFormatPrice
       summary: Creates a price for a wide format product
