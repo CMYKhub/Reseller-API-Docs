@@ -356,13 +356,11 @@ paths:
             type: object
             required:
               - reference
+              - quoteId
             properties:
               reference:
                 type: string
                 description: The resellers reference to this order
-              productId:
-                type: string
-                description: The id of the product to order (quoteId must not be specified)
               quoteId:
                 type: string
                 description: The id of the quote to order (productId must not be specified)
@@ -375,7 +373,7 @@ paths:
           $ref: "#/responses/Unauthorized"
         409:
           description: When the quote has already been ordered
-  /orders/{id}:
+  /man/orders/{id}:
     get:
       operationId: getOrderById
       summary: Returns orders
