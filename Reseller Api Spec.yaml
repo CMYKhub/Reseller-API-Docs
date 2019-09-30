@@ -32,6 +32,81 @@ paths:
           description: Discovery Resource
         401:
           $ref: "#/responses/Unauthorized"
+  /man/customers:
+    get:
+      operationId: getCustomers
+      summary: Returns all customers
+      description: Returns all customers
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: customerId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: The customer id
+        - in: query
+          name: resellerId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: The reseller id
+        - in: query
+          name: page
+          required: false
+          type: integer
+          allowEmptyValue: false
+          description: The index of the paged results
+        - in: query
+          name: size
+          required: false
+          type: integer
+          allowEmptyValue: false
+          description: The size of the paged results
+        - in: query
+          name: sort
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: The field being used to sort the results
+        - in: query
+          name: asc
+          required: false
+          type: boolean
+          allowEmptyValue: false
+          description: The sort direction
+      responses:
+        200:
+          description: Products Resource
+          schema:
+            type: object
+        401:
+          $ref: "#/responses/Unauthorized"
+  /man/customers/{id}:
+    get: getCustomerById
+      summary: Returns customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer
+          type: string
+      responses:
+        200:
+          description: Customer Resource
+        400:
+          description: Invalid id
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
   /man/products:
     get:
       operationId: getProducts
@@ -376,7 +451,7 @@ paths:
   /man/orders/{id}:
     get:
       operationId: getOrderById
-      summary: Returns orders
+      summary: Returns order
       consumes:
         - application/json
       produces:
