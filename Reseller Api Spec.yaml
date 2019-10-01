@@ -320,12 +320,12 @@ paths:
               kinds:
                 type: integer
                 description: The number of different kinds
+              resellerId:
+                type: string
+                description: The id of the reseller
               deliveryType:
                 type: integer
                 description: The type of delivery (0=To Reseller, 1=Pickup, 2=To Customer)
-              printType:
-                type: integer
-                description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
               finishing:
                 type: array
                 description: Finishing to apply to this product
