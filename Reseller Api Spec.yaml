@@ -347,6 +347,102 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
+  /man/pricing/booklet:
+    post:
+      operationId: getBookletProductPrice
+      summary: Creates a price for a booklet product
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: wizard
+          required: true
+          description: The details of the product to price
+          schema:
+            type: object
+            required:
+              - finishedSize
+              - quantity
+              - kinds
+              - bindingId
+              - body
+            properties:
+              finishedSize:
+                $ref: "#/definitions/Size"
+              quantity:
+                type: integer
+                description: The number of finished items of each kind
+              orientation:
+                type: integer
+                description: The orientation of the booklet (0 = Portrait, 1 = Landscape)
+              bindingId:
+                type: string
+                description: The id of the binding of the booklet to price
+              resellerId:
+                type: string
+                description: The id of the reseller
+              deliveryType:
+                type: integer
+                description: The type of delivery (0 = To Reseller, 1 = Pickup, 2 = To Customer)
+              printType:
+                type: integer
+                description: The type of printing (1 = Offset, 2 = Digital, 3 = Offset OR Digital)
+              body:
+                type: object
+                properties:
+                  pp:
+                    type: integer
+                    description: Printed pages
+                  paperId:
+                    type: string
+                    description: The id of the paper
+                  finishing:
+                    type: array
+                    description: Finishing to apply to this product
+                    items:
+                      type: object
+                      properties:
+                        finishingId:
+                          type: string
+                          description: The id of the finishing
+                        noItems:
+                          type: integer
+                          description: The number of finished items to apply this finishing to
+              cover:
+                type: object
+                properties:
+                  pp:
+                    type: integer
+                    description: Printed pages
+                  paperId:
+                    type: string
+                    description: The id of the paper
+                  productId:
+                    type: string
+                    description: The id of the product
+                  finishing:
+                    type: array
+                    description: Finishing to apply to this product
+                    items:
+                      type: object
+                      properties:
+                        finishingId:
+                          type: string
+                          description: The id of the finishing
+                        noItems:
+                          type: integer
+                          description: The number of finished items to apply this finishing to
+      responses:
+        200:
+          description: Product Price Resource
+        400:
+          description: Bad request, invalid product wizard
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
   /man/pricing/wideformat:
     post:
       operationId: getWideFormatPrice
