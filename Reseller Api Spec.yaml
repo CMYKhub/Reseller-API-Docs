@@ -735,6 +735,29 @@ paths:
         404:
           $ref: "#/responses/NotFound"
   /pp/artworkPackages:
+    get:
+      operationId: getArtworkPackages
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          required: false
+          description: The id of the artwork package
+          type: string
+        - in: query
+          name: orderId
+          required: false
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Artwork Package Resource
+        501:
+          $ref: "#/responses/NotImplemented"
 host: api.cmykhub.com
 securityDefinitions:
   API Key:
@@ -748,6 +771,10 @@ responses:
       $ref: "#/definitions/Error"
   Unauthorized:
     description: Unauthorized
+    schema:
+      $ref: "#/definitions/Error"
+  NotImplemented:
+    description: The specified resource is not implemented
     schema:
       $ref: "#/definitions/Error"
 definitions:
