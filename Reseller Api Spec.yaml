@@ -320,9 +320,6 @@ paths:
               kinds:
                 type: integer
                 description: The number of different kinds
-              resellerId:
-                type: string
-                description: The id of the reseller
               deliveryType:
                 type: integer
                 description: The type of delivery (0=To Reseller, 1=Pickup, 2=To Customer)
@@ -380,9 +377,6 @@ paths:
               bindingId:
                 type: string
                 description: The id of the binding of the booklet to price
-              resellerId:
-                type: string
-                description: The id of the reseller
               deliveryType:
                 type: integer
                 description: The type of delivery (0 = To Reseller, 1 = Pickup, 2 = To Customer)
@@ -606,7 +600,7 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /man/orders/{id}/artwork:
+  /man/orders/{id}/artwork:  
     get:
       operationId: getOrderArtworkById
       summary: Returns artwork info for an order
@@ -664,6 +658,83 @@ paths:
           $ref: "#/responses/Unauthorized"
         409:
           description: When a file attached to this order already exists with the same name
+  /pp/orders:
+    get:
+      operationId: getOrderById
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: orderId
+          required: true
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Order Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /pp/orders/all:
+    get:
+      operationId: getOrders
+      summary: Returns orders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Orders Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+  /pp/orders/{id}:
+    get:
+      operationId: getOrderById
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Order Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /pp/orders/{id}/artwork:
+    get:
+      operationId: getOrderArtworkById
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Artwork Package Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /pp/artworkPackages:
 host: api.cmykhub.com
 securityDefinitions:
   API Key:
