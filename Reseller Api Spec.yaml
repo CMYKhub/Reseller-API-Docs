@@ -32,7 +32,83 @@ paths:
           description: Discovery Resource
         401:
           $ref: "#/responses/Unauthorized"
-  /products:
+  /man/customers:
+    get:
+      operationId: getCustomers
+      summary: Returns all customers
+      description: Returns all customers
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: customerId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: The customer id
+        - in: query
+          name: resellerId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: The reseller id
+        - in: query
+          name: page
+          required: false
+          type: integer
+          allowEmptyValue: false
+          description: The index of the paged results
+        - in: query
+          name: size
+          required: false
+          type: integer
+          allowEmptyValue: false
+          description: The size of the paged results
+        - in: query
+          name: sort
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: The field being used to sort the results
+        - in: query
+          name: asc
+          required: false
+          type: boolean
+          allowEmptyValue: false
+          description: The sort direction
+      responses:
+        200:
+          description: Products Resource
+          schema:
+            type: object
+        401:
+          $ref: "#/responses/Unauthorized"
+  /man/customers/{id}:
+    get: 
+      operationId: getCustomerById
+      summary: Returns customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer
+          type: string
+      responses:
+        200:
+          description: Customer Resource
+        400:
+          description: Invalid id
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /man/products:
     get:
       operationId: getProducts
       summary: Returns all products
@@ -42,8 +118,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           required: false
           type: string
           allowEmptyValue: false
@@ -55,7 +131,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /wideformat/products:
+  /man/wideformat/products:
     get:
       operationId: getWideFormatProducts
       summary: Returns all wide format products
@@ -78,7 +154,7 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /paper:
+  /man/papers:
     get:
       operationId: getPapers
       summary: Returns papers optionally filtered by name
@@ -87,12 +163,18 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           required: false
           type: string
           allowEmptyValue: false
           description: Filters papers by name
+        - in: query
+          name: paperId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Returns the paper for the specified id
       responses:
         200:
           description: Papers Resource
@@ -100,7 +182,30 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /finishing:
+  /man/papers/{id}:
+    get: 
+      operationId: getPapersById
+      summary: Returns paper
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the paper
+          type: string
+      responses:
+        200:
+          description: Paper Resource
+        400:
+          description: Invalid id
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /man/finishings:
     get:
       operationId: getFinishings
       summary: Returns finishings optionally filtered by name
@@ -109,12 +214,51 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           required: false
           type: string
           allowEmptyValue: false
           description: Filters finishings by name
+        - in: query
+          name: finishingId
+          required: false
+          type: string
+          allowEmptyValue: false
+          description: Returns the finishing for the id
+        - in: query
+          name: width
+          required: true
+          type: number
+          allowEmptyValue: false
+          description: The width of the trimmed product in millimetres
+        - in: query
+          name: height
+          required: true
+          type: number
+          allowEmptyValue: false
+          description: The height of the trimmed product in millimetres
+        - in: query
+          name: paperWeight
+          required: true
+          type: number
+          allowEmptyValue: false
+          description: The weight of the paper in gsm
+        - in: query
+          name: printType
+          required: false
+          type: integer
+          description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
+        - in: query
+          name: book.pp
+          required: false
+          type: integer
+          description: The number of printed pages in the book. NB if any book parameters are specified then all book parameters must be specified
+        - in: query
+          name: book.orientation
+          required: false
+          type: integer
+          description: The orientation of the book(0=Portrait, 1=Landscape). NB if any book parameters are specified then all book parameters must be specified
       responses:
         200:
           description: Finishings Resource
@@ -122,58 +266,30 @@ paths:
             type: object
         401:
           $ref: "#/responses/Unauthorized"
-  /finishing/available:
-    get:
-      operationId: getFinishingAvailable
-      summary: Returns finishings available for a given specification
+  /man/finishings/{id}:
+    get: 
+      operationId: getFinishingsById
+      summary: Returns finishing
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
-        - name: width
-          in: query
+        - in: path
+          name: id
           required: true
-          type: number
-          allowEmptyValue: false
-          description: The width of the trimmed product in millimetres
-        - name: height
-          in: query
-          required: true
-          type: number
-          allowEmptyValue: false
-          description: The height of the trimmed product in millimetres
-        - name: paperWeight
-          in: query
-          required: true
-          type: number
-          allowEmptyValue: false
-          description: The weight of the paper in gsm
-        - name: printType
-          in: query
-          required: false
-          type: integer
-          description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
-        - name: book.pp
-          in: query
-          required: false
-          type: integer
-          description: The number of printed pages in the book. NB if any book parameters are specified then all book parameters must be specified
-        - name: book.orientation
-          in: query
-          required: false
-          type: integer
-          description: The orientation of the book(0=Portrait, 1=Landscape). NB if any book parameters are specified then all book parameters must be specified
+          description: The id of the finishing
+          type: string
       responses:
         200:
-          description: Available Finishings Resource
-          schema:
-            type: object
+          description: Finishing Resource
         400:
-          description: Bad request
+          description: Invalid id
         401:
           $ref: "#/responses/Unauthorized"
-  /pricing/standard:
+        404:
+          $ref: "#/responses/NotFound"
+  /man/pricing/standard:
     post:
       operationId: getProductPrice
       summary: Creates a price for a standard product
@@ -182,8 +298,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: wizard
-          in: body
+        - in: body
+          name: wizard
           required: true
           description: The details of the product to price
           schema:
@@ -207,9 +323,6 @@ paths:
               deliveryType:
                 type: integer
                 description: The type of delivery (0=To Reseller, 1=Pickup, 2=To Customer)
-              printType:
-                type: integer
-                description: The type of printing (1=Offset, 2=Digital, 3=Offset OR Digital)
               finishing:
                 type: array
                 description: Finishing to apply to this product
@@ -231,7 +344,100 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /pricing/wideformat:
+  /man/pricing/booklet:
+    post:
+      operationId: getBookletProductPrice
+      summary: Creates a price for a booklet product
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: wizard
+          required: true
+          description: The details of the product to price
+          schema:
+            type: object
+            required:
+              - finishedSize
+              - quantity
+              - kinds
+              - bindingId
+              - body
+            properties:
+              finishedSize:
+                $ref: "#/definitions/Size"
+              quantity:
+                type: integer
+                description: The number of finished items of each kind
+              orientation:
+                type: integer
+                description: The orientation of the booklet (0 = Portrait, 1 = Landscape)
+              bindingId:
+                type: string
+                description: The id of the binding of the booklet to price
+              deliveryType:
+                type: integer
+                description: The type of delivery (0 = To Reseller, 1 = Pickup, 2 = To Customer)
+              printType:
+                type: integer
+                description: The type of printing (1 = Offset, 2 = Digital, 3 = Offset OR Digital)
+              body:
+                type: object
+                properties:
+                  pp:
+                    type: integer
+                    description: Printed pages
+                  paperId:
+                    type: string
+                    description: The id of the paper
+                  finishing:
+                    type: array
+                    description: Finishing to apply to this product
+                    items:
+                      type: object
+                      properties:
+                        finishingId:
+                          type: string
+                          description: The id of the finishing
+                        noItems:
+                          type: integer
+                          description: The number of finished items to apply this finishing to
+              cover:
+                type: object
+                properties:
+                  pp:
+                    type: integer
+                    description: Printed pages
+                  paperId:
+                    type: string
+                    description: The id of the paper
+                  productId:
+                    type: string
+                    description: The id of the product
+                  finishing:
+                    type: array
+                    description: Finishing to apply to this product
+                    items:
+                      type: object
+                      properties:
+                        finishingId:
+                          type: string
+                          description: The id of the finishing
+                        noItems:
+                          type: integer
+                          description: The number of finished items to apply this finishing to
+      responses:
+        200:
+          description: Product Price Resource
+        400:
+          description: Bad request, invalid product wizard
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /man/pricing/wideformat:
     post:
       operationId: getWideFormatPrice
       summary: Creates a price for a wide format product
@@ -286,7 +492,7 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /orders:
+  /man/orders:
     get:
       operationId: getOrders
       summary: Returns orders
@@ -294,6 +500,47 @@ paths:
         - application/json
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: orderId
+          required: false
+          description: The id of the order to be returned
+          type: string
+        - in: query
+          name: resellerId
+          required: false
+          description: The id of the reseller to be used to filter the orders
+          type: string
+        - in: query
+          name: filterBy
+          required: false
+          description: The type of filter to be used on the orders collection
+          type: string
+        - in: query
+          name: filter
+          required: false
+          description: The filter to be used on the orders collection
+          type: string
+        - in: query
+          name: sort
+          required: false
+          description: The field which the orders will be sorted by. Default is DateOrderd
+          type: string
+        - in: query
+          name: asc
+          required: false
+          description: The sort direction. Default is false
+          type: boolean
+        - in: query
+          name: pg
+          required: false
+          description: The page size when returning paged results. Default is 20
+          type: integer
+        - in: query
+          name: ix
+          required: false
+          description: The page index when returning paged results. Default is 0
+          type: integer
       responses:
         200:
           description: Orders Resource
@@ -307,21 +554,19 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: order
-          in: body
+        - in: body
+          name: order
           required: true
           description: Order details
           schema:
             type: object
             required:
               - reference
+              - quoteId
             properties:
               reference:
                 type: string
                 description: The resellers reference to this order
-              productId:
-                type: string
-                description: The id of the product to order (quoteId must not be specified)
               quoteId:
                 type: string
                 description: The id of the quote to order (productId must not be specified)
@@ -334,17 +579,17 @@ paths:
           $ref: "#/responses/Unauthorized"
         409:
           description: When the quote has already been ordered
-  /orders/{id}:
+  /man/orders/{id}:
     get:
       operationId: getOrderById
-      summary: Returns orders
+      summary: Returns order
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
@@ -355,13 +600,13 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-  /orders/{id}/artwork:
+  /man/orders/{id}/artwork:  
     get:
       operationId: getOrderArtworkById
       summary: Returns artwork info for an order
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
@@ -376,20 +621,6 @@ paths:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-    patch:
-      operationId: patch artwork file
-      summary: Patch properties of the artwork file
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the order
-          type: string
-      consumes:
-        - application/json-patch+json
-      responses:
-        200:
-          description: Patched Order Artwork Resource
     post:
       operationId: postOrderArtwork
       summary: Upload artwork
@@ -398,13 +629,13 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
-        - name: artwork
-          in: body
+        - in: body
+          name: artwork
           required: true
           description: Order details
           schema:
@@ -427,46 +658,106 @@ paths:
           $ref: "#/responses/Unauthorized"
         409:
           description: When a file attached to this order already exists with the same name
-  /artwork/{id}/content:
+  /pp/orders:
     get:
-      operationId: getArtworkContentById
-      summary: Returns content for an artwork file
+      operationId: getOrderById
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
-        - name: id
-          in: path
+        - in: query
+          name: orderId
           required: true
           description: The id of the order
           type: string
-      produces:
-        - application/octet-stream
       responses:
         200:
-          description: Order Artwork Resource
+          description: Order Resource
         401:
           $ref: "#/responses/Unauthorized"
         404:
           $ref: "#/responses/NotFound"
-    post:
-      operationId: postArtworkContent
-      summary: Upload artwork content stream
+  /pp/orders/all:
+    get:
+      operationId: getOrders
+      summary: Returns orders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Orders Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+  /pp/orders/{id}:
+    get:
+      operationId: getOrderById
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           description: The id of the order
           type: string
-      description: Chunking headers supported
-      consumes:
-        - application/octet-stream
       responses:
         200:
-          description: Commit Resource
-        400:
-          description: Bad request
+          description: Order Resource
         401:
           $ref: "#/responses/Unauthorized"
-        409:
-          description: When a chunking headers specify overlap of bytes
+        404:
+          $ref: "#/responses/NotFound"
+  /pp/orders/{id}/artwork:
+    get:
+      operationId: getOrderArtworkById
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Artwork Package Resource
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/NotFound"
+  /pp/artworkPackages:
+    get:
+      operationId: getArtworkPackages
+      summary: Returns order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: id
+          required: false
+          description: The id of the artwork package
+          type: string
+        - in: query
+          name: orderId
+          required: false
+          description: The id of the order
+          type: string
+      responses:
+        200:
+          description: Artwork Package Resource
+        501:
+          $ref: "#/responses/NotImplemented"
 host: api.cmykhub.com
 securityDefinitions:
   API Key:
@@ -480,6 +771,10 @@ responses:
       $ref: "#/definitions/Error"
   Unauthorized:
     description: Unauthorized
+    schema:
+      $ref: "#/definitions/Error"
+  NotImplemented:
+    description: The specified resource is not implemented
     schema:
       $ref: "#/definitions/Error"
 definitions:
